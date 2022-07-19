@@ -8,5 +8,7 @@ export const CONSTANTS = {
     PASSWORD: "password",
     EMAIL: "email",
     LOGOUT: "logout",
+    NO_BLOGS: "no blogs",
+    LOADING: "loading...",
     EMAIL_AND_PASSWORD_IS_INCORRECT: "email and password is incorrect"
 }

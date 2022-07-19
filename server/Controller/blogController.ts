@@ -33,3 +33,18 @@ export const postNewBlog = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const deleteBlog = async (req: Request, res: Response) => {
+    const uid = req.params.uid
+    try {
+        await Blog.findOneAndRemove({uid: uid})
+        res.json({
+            message: `Delete blog ${uid} successfully`
+        })
+    } catch (error) {
+        res.json({
+            statusCode: res.statusCode,
+            message: error
+        })
+    }
+}

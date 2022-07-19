@@ -4,6 +4,8 @@ import { AppDispatch } from '../Redux'
 import { getBlogs, RootState } from '../Redux/blog-slice'
 import {BlogInterface} from '../../../server/Interface/blogInterface'
 import BlogDetailsComponent from '../Components/blogDetailsComponent'
+import { CONSTANTS } from '../Constants/constants' 
+import NoticeComponent from '../Components/noticeComponent'
 
 const Blog : React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -16,13 +18,13 @@ const Blog : React.FC = () => {
     return (
         <div>
             <div>
-                {loading.getAll && <h1>Loading...</h1>}
-                {!error.getAll && !loading.getAll && blogs && !(blogs.length > 0) && <h1>No Blogs</h1>}
+                {loading.getAll && <NoticeComponent message={CONSTANTS.LOADING}/>}
+                {!error.getAll && !loading.getAll && blogs && !(blogs.length > 0) && <NoticeComponent message={CONSTANTS.NO_BLOGS}/>}
                 {error.getAll && <h1>error</h1>}
                 <div className='space-y-4 p-4'>
                 {blogs.map((each: BlogInterface) => {
                     return (
-                        <div>
+                        <div key={each.uid}>
                             <BlogDetailsComponent {...each}/>
                         </div>
                     )

@@ -2,6 +2,10 @@ import { Schema, model } from "mongoose";
 import { BlogInterface } from "../Interface/blogInterface";
 
 const blogSchema = new Schema<BlogInterface>({
+    uid: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
