@@ -1,9 +1,65 @@
 import React from 'react'
+import ButtonComponent from '../Components/buttonComponent'
+import DropDownComponent from '../Components/dropDownComponent'
+import InputComponent from '../Components/InputComponent'
+import { CONSTANTS } from '../Constants/constants'
+import { useAuth } from '../Context/authContext'
+import { uid } from 'uid';
+import { createBlog } from '../Redux/blog-slice'
+import * as ReactRouterDOM from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../Redux'
 
-const Create = () => {
-  return (
-    <div>Create</div>
-  )
+type RegisterInterface = {
+    title: string,
+    description: string
+}
+
+const Create : React.FC = () => {
+    const dispatch = useDispatch<AppDispatch>()
+    const navigate = ReactRouterDOM.useNavigate()
+    const [authFail, setAuthFail] = React.useState('')
+    const [register, setRegister] = React.useState<RegisterInterface>({
+        title: '',
+        description: '',
+    })
+    const [dropDownKind, setDropDownKind] = React.useState('travel')
+    const {currentUser} = useAuth()
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        setRegister({
+            ...register, [e.target.name] : e.target.value
+        })
+    }
+    const handleCreateBlog = async () => {
+        if(register.title === '' || register.description === '') setAuthFail('Please fill in all data')
+        else{
+            await dispatch(createBlog({uid: uid(25), title: register.title, description: register.description, kind: dropDownKind, user: currentUser.uid}))
+            navigate(`/${currentUser.uid}`)
+        }
+    }
+    const handleDropDownKind = async (e: React.ChangeEvent<HTMLSelectElement>) => {        
+        setDropDownKind(e.target.value)
+    }
+    return (
+        <div>
+            <div className='h-96 items-center flex'>
+            <div className='bg-red-500 font-semibold w-96 h-72 mx-auto rounded-md'>
+                <div className='p-3'>
+                {authFail && <h1>{authFail}</h1>}
+                <h1 className='text-center text-white'>{CONSTANTS.CREATE_BLOG.toUpperCase()}</h1>
+                <div className='flex items-center justify-center'>
+                    <div className='space-y-2'>
+                    <InputComponent onChange={handleInputChange} inputProps={{name: CONSTANTS.TITLE, placeholder: CONSTANTS.TITLE, type: CONSTANTS.TEXT, value: register.title}}/>
+                    <InputComponent onChange={handleInputChange} inputProps={{name: CONSTANTS.DESCRIPTION, placeholder: CONSTANTS.DESCRIPTION, type: CONSTANTS.TEXT, value: register.description}}/>
+                    <DropDownComponent onChange={handleDropDownKind} inputProps={{data: ['travel', 'food', 'attractions', 'beauty']}}/>
+                    <ButtonComponent onClick={handleCreateBlog}>{CONSTANTS.CREATE.toUpperCase()}</ButtonComponent>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    )
 }
 
 export default Create

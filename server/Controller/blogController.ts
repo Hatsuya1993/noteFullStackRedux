@@ -1,4 +1,5 @@
 import {Request,Response} from 'express'
+import { Error } from 'mongoose'
 import { BlogInterface } from '../Interface/blogInterface'
 import { Blog } from '../Models/blogModel'
 
@@ -56,6 +57,20 @@ export const deleteAllBlog = async (req: Request, res: Response) => {
         res.json({
             message: `Delete all blogs for user ${userid} successfully`
         })
+    } catch (error) {
+        res.json({
+            statusCode: res.statusCode,
+            message: error
+        })
+    }
+}
+
+export const createBlog = async (req: Request, res: Response) => {
+    const bodyData = req.body
+    try {
+        const newBlog = new Blog(bodyData)
+        await newBlog.save()
+        res.json(newBlog)
     } catch (error) {
         res.json({
             statusCode: res.statusCode,

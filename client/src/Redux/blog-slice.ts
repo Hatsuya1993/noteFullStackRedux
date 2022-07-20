@@ -7,13 +7,15 @@ export interface RootState {
         blogs: any[],
         loading: {
             getAll: boolean,
-            deleteOne: boolean
+            deleteOne: boolean,
             deleteAll: boolean
+            create: boolean
         },
         errors: {
             getAll: boolean,
             deleteOne: boolean,
-            deleteAll: boolean
+            deleteAll: boolean,
+            create: boolean
         }
     }
 }
@@ -55,19 +57,41 @@ export const deleteAllBlog = createAsyncThunk(
     }
 )
 
+export const createBlog = createAsyncThunk(
+    "blog/createBlog",
+    async (data: BlogInterface) => {
+        try {
+            const addBlog = await axios.post(`http://localhost:8200/home/create`, {
+                uid: data.uid,
+                title: data.title,
+                description: data.description,
+                kind: data.kind,
+                user: data.user
+            })
+            return addBlog.data
+        } catch (error) {
+            throw new Error(`${error}`)
+        }
+    }
+)
+
+const INITIAL_STATE: BlogInterface[] = []
+
 const blogSlice = createSlice({
     name: "blog",
     initialState: {
-        blogs: [],
+        blogs: INITIAL_STATE,
         loading: {
             getAll: false,
             deleteOne: false,
-            deleteAll: false
+            deleteAll: false,
+            create: false
         },
         errors: {
             getAll: false,
             deleteOne: false,
-            deleteAll: false
+            deleteAll: false,
+            create: false
         }
     },
     reducers: {},
@@ -108,6 +132,19 @@ const blogSlice = createSlice({
         builder.addCase(deleteAllBlog.rejected, (state) => {
             state.loading.deleteAll = false
             state.errors.deleteAll = true
+        })
+        builder.addCase(createBlog.pending, (state) => {
+            state.loading.create = true
+            state.errors.create = false
+        })
+        builder.addCase(createBlog.fulfilled, (state, {payload}) => {
+            const addDate : BlogInterface = payload 
+            state.blogs.unshift(addDate)
+            state.loading.create = false
+        })
+        builder.addCase(createBlog.rejected, (state) => {
+            state.loading.create = false
+            state.errors.create = true
         })
     }
 })
