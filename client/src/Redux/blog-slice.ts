@@ -8,10 +8,12 @@ export interface RootState {
         loading: {
             getAll: boolean,
             deleteOne: boolean
+            deleteAll: boolean
         },
         errors: {
             getAll: boolean,
-            deleteOne: boolean
+            deleteOne: boolean,
+            deleteAll: boolean
         }
     }
 }
@@ -41,17 +43,31 @@ export const deleteBlog = createAsyncThunk(
     }
 )
 
+export const deleteAllBlog = createAsyncThunk(
+    "blog/deleteAllBlogs",
+    async (userId: String) => {
+        try {
+            await axios.delete(`http://localhost:8200/home/deleteAll/${userId}`)
+            return userId
+        } catch (error) {
+            throw new Error(`${error}`)
+        }
+    }
+)
+
 const blogSlice = createSlice({
     name: "blog",
     initialState: {
         blogs: [],
         loading: {
             getAll: false,
-            deleteOne: false
+            deleteOne: false,
+            deleteAll: false
         },
         errors: {
             getAll: false,
-            deleteOne: false
+            deleteOne: false,
+            deleteAll: false
         }
     },
     reducers: {},
@@ -80,6 +96,18 @@ const blogSlice = createSlice({
         builder.addCase(deleteBlog.rejected, (state) => {
             state.loading.deleteOne = false
             state.errors.deleteOne = true
+        })
+        builder.addCase(deleteAllBlog.pending, (state) => {
+            state.loading.deleteAll = true
+            state.errors.deleteAll = false
+        })
+        builder.addCase(deleteAllBlog.fulfilled, (state, {payload}) => {
+            state.blogs = state.blogs.filter((blog: BlogInterface) => blog.user !== payload)
+            state.loading.deleteAll = false
+        })
+        builder.addCase(deleteAllBlog.rejected, (state) => {
+            state.loading.deleteAll = false
+            state.errors.deleteAll = true
         })
     }
 })

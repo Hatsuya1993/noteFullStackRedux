@@ -48,3 +48,18 @@ export const deleteBlog = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const deleteAllBlog = async (req: Request, res: Response) => {
+    const userid = req.params.userid
+    try {
+        await Blog.deleteMany({user: userid})
+        res.json({
+            message: `Delete all blogs for user ${userid} successfully`
+        })
+    } catch (error) {
+        res.json({
+            statusCode: res.statusCode,
+            message: error
+        })
+    }
+}

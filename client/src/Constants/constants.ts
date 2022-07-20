@@ -10,5 +10,6 @@ export const CONSTANTS = {
     LOGOUT: "logout",
     NO_BLOGS: "no blogs",
     LOADING: "loading...",
+    DELETE_ALL: "delete all",
     EMAIL_AND_PASSWORD_IS_INCORRECT: "email and password is incorrect"
 }
