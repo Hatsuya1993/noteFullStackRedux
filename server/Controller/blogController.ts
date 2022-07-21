@@ -78,3 +78,17 @@ export const createBlog = async (req: Request, res: Response) => {
         })
     }
 }
+
+export const editBlog = async (req: Request, res: Response) => {
+    const uid = req.params.uid
+    const data = req.body
+    try {
+        await Blog.findOneAndUpdate({uid: uid}, data)
+        res.json(data)
+    } catch (error) {
+        res.json({
+            statusCode: res.statusCode,
+            message: error
+        })
+    }
+}

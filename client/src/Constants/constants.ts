@@ -14,5 +14,6 @@ export const CONSTANTS = {
     CREATE_BLOG: "create blog",
     TITLE: "title",
     DESCRIPTION: "description",
+    UPDATE: "update",
     EMAIL_AND_PASSWORD_IS_INCORRECT: "email and password is incorrect"
 }

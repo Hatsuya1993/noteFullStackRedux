@@ -9,13 +9,15 @@ export interface RootState {
             getAll: boolean,
             deleteOne: boolean,
             deleteAll: boolean
-            create: boolean
+            create: boolean,
+            edit: boolean
         },
         errors: {
             getAll: boolean,
             deleteOne: boolean,
             deleteAll: boolean,
-            create: boolean
+            create: boolean,
+            edit: boolean
         }
     }
 }
@@ -69,6 +71,24 @@ export const createBlog = createAsyncThunk(
                 user: data.user
             })
             return addBlog.data
+        } catch (error) {
+            throw new Error(`${error}`)
+        }
+    }
+)
+
+export const editBlog = createAsyncThunk(
+    "blog/editBlog",
+    async (data: BlogInterface) => {
+        try {
+            const editBlog = await axios.put(`http://localhost:8200/home/edit/${data.uid}`, {
+                uid: data.uid,
+                title: data.title,
+                description: data.description,
+                kind: data.kind,
+                user: data.user
+            })
+            return editBlog.data
         } catch (error) {
             throw new Error(`${error}`)
         }
@@ -143,6 +163,17 @@ const blogSlice = createSlice({
             state.loading.create = false
         })
         builder.addCase(createBlog.rejected, (state) => {
+            state.loading.create = false
+            state.errors.create = true
+        })
+        builder.addCase(editBlog.pending, (state) => {
+            state.loading.create = true
+            state.errors.create = false
+        })
+        builder.addCase(editBlog.fulfilled, (state, {payload}) => {
+            state.loading.create = false
+        })
+        builder.addCase(editBlog.rejected, (state) => {
             state.loading.create = false
             state.errors.create = true
         })
