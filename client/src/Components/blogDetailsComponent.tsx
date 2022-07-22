@@ -29,8 +29,8 @@ const BlogDetailsComponent : React.FC<BlogInterface> = ({title, description, kin
             <p className='text-white'>{kind}</p>
             </div>
             <div className='flex gap-3 text-white text-2xl'>
-                <BsFillTrashFill onClick={handleDelete}/>
-                <BsFillPencilFill onClick={handleEdit}/>
+                <BsFillTrashFill className='hover:cursor-pointer' onClick={handleDelete}/>
+                <BsFillPencilFill className='hover:cursor-pointer' onClick={handleEdit}/>
             </div>
         </div>
     )
