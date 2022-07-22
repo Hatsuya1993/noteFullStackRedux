@@ -49,7 +49,7 @@ const Create : React.FC = () => {
         })
     }
     const handleCreateBlog = async () => {
-        if(register.title === '' || register.description === '') setAuthFail('Please fill in all data')
+        if(register.title === '' || register.description === '' || dropDownKind === '') setAuthFail('Please fill in all data')
         else{
             if(state){
                 await dispatch(editBlog({title: register.title, description: register.description, kind: dropDownKind, uid: state.uid, user: state.user}))
@@ -70,7 +70,7 @@ const Create : React.FC = () => {
             <div className='h-96 items-center flex'>
             <div className='bg-red-500 font-semibold w-96 h-72 mx-auto rounded-md'>
                 <div className='p-3'>
-                {authFail && <h1>{authFail}</h1>}
+                {authFail && <h1 className='text-center font-semibold text-2xl'>{authFail}</h1>}
                 <h1 className='text-center text-white'>{CONSTANTS.CREATE_BLOG.toUpperCase()}</h1>
                 <div className='flex items-center justify-center'>
                     <div className='space-y-2'>
