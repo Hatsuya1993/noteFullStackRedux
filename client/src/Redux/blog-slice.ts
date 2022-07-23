@@ -22,15 +22,21 @@ export interface RootState {
     }
 }
 
-export const getBlogs = createAsyncThunk(
-    "blog/getBlogs",
-    async () => {
+interface PageData {
+    currentUserUid: string,
+    page: string,
+    limit: string
+}
+
+export const getBlogsLimit = createAsyncThunk(
+    "blog/getBlogsLimit",
+    async (pageData : PageData) => {
         try {
-            const res = await axios.get(`http://localhost:8200/home`)
+            const res = await axios.get(`http://localhost:8200/home/${pageData.currentUserUid}?page=${pageData.page}&limit=${pageData.limit}`)
             const data = await res.data
             return data
         } catch (error) {
-            throw new Error(`${error}`)
+            
         }
     }
 )
@@ -116,15 +122,15 @@ const blogSlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getBlogs.pending, (state) => {
+        builder.addCase(getBlogsLimit.pending, (state) => {
             state.loading.getAll = true            
             state.errors.getAll = false
         })
-        builder.addCase(getBlogs.fulfilled, (state, {payload}) => {
-            state.loading.getAll = false
+        builder.addCase(getBlogsLimit.fulfilled, (state, {payload}) => {
+            state.loading.getAll = false            
             state.blogs = payload.data
         })
-        builder.addCase(getBlogs.rejected, (state) => {
+        builder.addCase(getBlogsLimit.rejected, (state) => {
             state.loading.getAll = false
             state.errors.getAll = true
         })

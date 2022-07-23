@@ -25,7 +25,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const loginData = await login(inputFields.name, inputFields.password)
-            navigate(`/${loginData.user.uid}`)
+            navigate(`/${loginData.user.uid}?page=1&limit=3`)
         } catch (error) {
             setAuthFail(CONSTANTS.EMAIL_AND_PASSWORD_IS_INCORRECT)
             console.log(error)

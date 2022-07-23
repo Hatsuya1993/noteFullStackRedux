@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../Redux'
-import { deleteAllBlog, getBlogs, RootState } from '../Redux/blog-slice'
+import { deleteAllBlog, getBlogsLimit, RootState } from '../Redux/blog-slice'
 import {BlogInterface} from '../../../server/Interface/blogInterface'
 import BlogDetailsComponent from '../Components/blogDetailsComponent'
 import { CONSTANTS } from '../Constants/constants' 
 import NoticeComponent from '../Components/noticeComponent'
 import ButtonComponent from '../Components/buttonComponent'
 import { useAuth } from '../Context/authContext'
+import PaginationComponent from '../Components/paginationComponent'
 
 const Blog : React.FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const blogs = useSelector((state: RootState) => state.blog.blogs)
     const loading = useSelector((state: RootState) => state.blog.loading)    
     const error = useSelector((state: RootState) => state.blog.errors)
-    const {currentUser} = useAuth()
+    const {currentUser: {uid}} = useAuth()
     useEffect(() => {
-        dispatch(getBlogs())
+        dispatch(getBlogsLimit({currentUserUid: uid, page: '1', limit: '3'}))
     }, [dispatch])
     const handleDeleteAll = async () => {
-        await dispatch(deleteAllBlog(currentUser.uid))
+        await dispatch(deleteAllBlog(uid))
     }
     return (
         <div>
@@ -39,6 +40,7 @@ const Blog : React.FC = () => {
                     )
                     })}
                 </div>
+                <PaginationComponent />
             </div>
         </div>
     )

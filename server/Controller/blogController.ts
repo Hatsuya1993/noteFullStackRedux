@@ -4,7 +4,13 @@ import { BlogInterface } from '../Interface/blogInterface'
 import { Blog } from '../Models/blogModel'
 
 export const home = async (req: Request, res: Response) => {
-    Blog.find({}, (err: Error, result: BlogInterface[]) => {
+    const userUid = req.params.userUid
+    if(req.query.page && req.query.limit){
+    const page : number = parseInt(req.query.page!.toString())
+    const limit : number = parseInt(req.query.limit!.toString())
+    const startIndex = (page - 1) * limit
+    const endPage = page * limit
+    Blog.find({user: userUid}, (err: Error, result: BlogInterface[]) => {
         if(err){
             res.json({
                 "Response": res.statusCode,
@@ -12,11 +18,29 @@ export const home = async (req: Request, res: Response) => {
             })
         }
         else{
+            console.log(result.slice(startIndex, endPage),4567, startIndex, endPage)
             res.json({
-                data: result
+                data: result.slice(startIndex, endPage), currentPage: page
             })
         }
     })
+    }
+    else{
+        Blog.find({user: userUid}, (err: Error, result: BlogInterface[]) => {
+            if(err){
+                res.json({
+                    "Response": res.statusCode,
+                    "Error message": err
+                })
+            }
+            else{
+                res.json({
+                    data: result,
+                    currentPage: 1
+                })
+            }
+        })
+    }
 }
 
 export const postNewBlog = async (req: Request, res: Response) => {

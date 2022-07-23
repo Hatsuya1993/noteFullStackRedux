@@ -77,7 +77,7 @@ const Create : React.FC = () => {
                     <InputComponent onChange={handleInputChange} inputProps={{name: CONSTANTS.TITLE, placeholder: CONSTANTS.TITLE, type: CONSTANTS.TEXT, value: register.title}}/>
                     <InputComponent onChange={handleInputChange} inputProps={{name: CONSTANTS.DESCRIPTION, placeholder: CONSTANTS.DESCRIPTION, type: CONSTANTS.TEXT, value: register.description}}/>
                     <DropDownComponent onChange={handleDropDownKind} inputProps={{data: ['Select one', 'travel', 'food', 'attractions', 'beauty']}}/>
-                    {register.title === '' ? <ButtonComponent onClick={handleCreateBlog}>{CONSTANTS.CREATE.toUpperCase()}</ButtonComponent> : <ButtonComponent onClick={handleCreateBlog}>{CONSTANTS.UPDATE.toUpperCase()}</ButtonComponent>}
+                    {state ? <ButtonComponent onClick={handleCreateBlog}>{CONSTANTS.UPDATE.toUpperCase()}</ButtonComponent> : <ButtonComponent onClick={handleCreateBlog}>{CONSTANTS.CREATE.toUpperCase()}</ButtonComponent>}
                     </div>
                 </div>
                 </div>

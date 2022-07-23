@@ -28,7 +28,7 @@ const NavBar = () => {
                             </ReactRouterDOM.Link>
                         </li>
                         <li>
-                            <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}` : `/`} >
+                            <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}?page=1&limit=3` : `/`} >
                             {CONSTANTS.BLOGS.toUpperCase()}
                             </ReactRouterDOM.Link>
                         </li>

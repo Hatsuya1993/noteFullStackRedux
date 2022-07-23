@@ -3,7 +3,7 @@ import { home, postNewBlog, deleteBlog, deleteAllBlog, createBlog, editBlog } fr
 
 export const blogRoutes = express.Router()
 
-blogRoutes.route("/home").get(home)
+blogRoutes.route("/home/:userUid").get(home)
 
 blogRoutes.route("/home/add").post(postNewBlog)
 
