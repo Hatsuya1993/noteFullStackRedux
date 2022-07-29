@@ -12,6 +12,7 @@ export const CONSTANTS = {
     LOADING: "loading...",
     DELETE_ALL: "delete all",
     CREATE_BLOG: "create blog",
+    UPDATE_BLOG: "update blog",
     TITLE: "title",
     DESCRIPTION: "description",
     UPDATE: "update",

@@ -23,14 +23,15 @@ const NavBar = () => {
                 <div>
                     <ul className='md:flex gap-4 font-semibold'>
                         <li>
-                            <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}/create` : `/`} >
+                            {currentUser && <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}/create` : `/`} >
                             {CONSTANTS.CREATE.toUpperCase()}
-                            </ReactRouterDOM.Link>
+                            </ReactRouterDOM.Link>}
                         </li>
                         <li>
-                            <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}?page=1&limit=3` : `/`} >
+                            {currentUser && <ReactRouterDOM.Link to={currentUser ? `/${currentUser.uid}?page=1&limit=3` : `/`} >
                             {CONSTANTS.BLOGS.toUpperCase()}
-                            </ReactRouterDOM.Link>
+                            </ReactRouterDOM.Link>}
+                            
                         </li>
                         <li>
                             {currentUser ? <ReactRouterDOM.Link onClick={handleLogout} to={`/`} >

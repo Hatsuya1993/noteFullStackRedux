@@ -71,7 +71,7 @@ const Create : React.FC = () => {
             <div className='bg-red-500 font-semibold w-96 h-72 mx-auto rounded-md'>
                 <div className='p-3'>
                 {authFail && <h1 className='text-center font-semibold text-2xl'>{authFail}</h1>}
-                <h1 className='text-center text-white'>{CONSTANTS.CREATE_BLOG.toUpperCase()}</h1>
+                {state ? <h1 className='text-center text-white'>{CONSTANTS.UPDATE_BLOG.toUpperCase()}</h1> : <h1 className='text-center text-white'>{CONSTANTS.CREATE_BLOG.toUpperCase()}</h1>}
                 <div className='flex items-center justify-center'>
                     <div className='space-y-2'>
                     <InputComponent onChange={handleInputChange} inputProps={{name: CONSTANTS.TITLE, placeholder: CONSTANTS.TITLE, type: CONSTANTS.TEXT, value: register.title}}/>
